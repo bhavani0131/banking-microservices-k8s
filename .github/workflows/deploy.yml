@@ -22,7 +22,7 @@ name: Deploy Cloud Bank
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch: {}
 
 env:
