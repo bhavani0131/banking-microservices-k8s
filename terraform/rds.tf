@@ -15,16 +15,30 @@ resource "aws_db_subnet_group" "users" {
   subnet_ids = local.private_subnet_ids
 }
 
+# Added missing security group required by lambda.tf
+resource "aws_security_group" "users_db_sync_lambda" {
+  name        = "${var.project_name}-${var.environment}-users-db-sync-lambda-sg"
+  description = "Attached to the users-db-sync Lambda"
+  vpc_id      = local.vpc_id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_security_group" "users_db" {
   name        = "${var.project_name}-${var.environment}-users-db-sg"
   description = "Allow PostgreSQL (5432) inside VPC"
   vpc_id      = local.vpc_id
 
   ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.users_db_sync_lambda.id]
   }
 
   egress {
@@ -51,7 +65,6 @@ resource "aws_db_instance" "users" {
   publicly_accessible    = false
 }
 
-# Credentials handed to S3
 resource "aws_s3_bucket" "users_db_creds" {
   bucket = "${var.project_name}-${var.environment}-users-db-creds-${data.aws_caller_identity.current.account_id}"
 }
