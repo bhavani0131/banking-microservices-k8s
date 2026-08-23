@@ -41,7 +41,7 @@ variable "public_subnet_cidrs" {
 variable "eks_cluster_version" {
   description = "Kubernetes version for EKS"
   type        = string
-  default     = "1.33"
+  default     = "1.30"
 }
 
 variable "node_instance_types" {
@@ -52,17 +52,17 @@ variable "node_instance_types" {
 
 variable "node_desired_size" {
   type    = number
-  default = 4
+  default = 1
 }
 
 variable "node_min_size" {
   type    = number
-  default = 2
+  default = 1
 }
 
 variable "node_max_size" {
   type    = number
-  default = 6
+  default = 2
 }
 
 variable "dynamodb_billing_mode" {
