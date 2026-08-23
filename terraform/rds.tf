@@ -72,7 +72,7 @@ resource "aws_rds_cluster" "users" {
 
   storage_encrypted      = true
   skip_final_snapshot    = true
-  backup_retention_period = 7
+  backup_retention_period = 1
 
   # NOTE: no serverlessv2_scaling_configuration here on purpose. This runs
   # in the Pluralsight AWS sandbox, whose org-level SCP explicitly denies
