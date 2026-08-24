@@ -131,7 +131,7 @@ jobs:
         working-directory: terraform
         run: |
           terraform init
-          terraform apply -auto-approve
+          terraform destroy -auto-approve
 
       - name: Collect outputs
         id: tf-out
