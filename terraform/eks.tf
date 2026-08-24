@@ -15,9 +15,9 @@ module "eks" {
   # OIDC provider is required for IRSA (IAM Roles for Service Accounts) -
   # used by both the ALB controller and the backend app to reach DynamoDB.
   cluster_addons = {
-    coredns                = { most_recent = true }
-    kube-proxy              = { most_recent = true }
-    vpc-cni                 = { most_recent = true }
+    coredns    = { most_recent = true }
+    kube-proxy = { most_recent = true }
+    vpc-cni    = { most_recent = true }
   }
 
   eks_managed_node_groups = {
@@ -59,7 +59,7 @@ module "ebs_csi_irsa" {
 
 resource "aws_eks_addon" "ebs_csi" {
   cluster_name             = module.eks.cluster_name
-  addon_name                = "aws-ebs-csi-driver"
+  addon_name               = "aws-ebs-csi-driver"
   service_account_role_arn = module.ebs_csi_irsa.iam_role_arn
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
@@ -149,8 +149,8 @@ module "backend_app_irsa" {
   role_name = "${var.project_name}-${var.environment}-backend-dynamodb"
 
   role_policy_arns = {
-    dynamodb   = aws_iam_policy.dynamodb_app_access.arn
-    sns        = aws_iam_policy.sns_publish_user_registered.arn
+    dynamodb = aws_iam_policy.dynamodb_app_access.arn
+    sns      = aws_iam_policy.sns_publish_user_registered.arn
   }
 
   oidc_providers = {
