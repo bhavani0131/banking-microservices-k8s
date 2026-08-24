@@ -127,11 +127,11 @@ jobs:
             aws dynamodb wait table-exists --table-name "$TABLE" --region "$AWS_REGION"
           fi
 
-      - name: terraform init & apply
+      - name: terraform init & destroy
         working-directory: terraform
         run: |
           terraform init
-          terraform destroy -auto-approve
+          terraform destroy -auto-approve -lock=false
 
       - name: Collect outputs
         id: tf-out
